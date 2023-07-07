@@ -1,6 +1,21 @@
 import ProfilePicture from './ProfilePicture';
+import {useState} from "react";
 import './Profile.css';
+import EditProfile from './EditProfile';
 const Profile = () => {
+    const [edit, setEdit] = useState(false);
+    const handleEdit = () => {
+        //displays the edit profile page
+        setEdit(true); 
+    }
+
+    const handleCancel = () => {
+        setEdit(false);
+    }
+    if (edit){
+        return <EditProfile onCancel={handleCancel}></EditProfile>
+    }
+
     return (
         <>
             <div className="container-fluid">
@@ -14,7 +29,7 @@ const Profile = () => {
                                 <h3>Username</h3>
                             </div>
                             <div className="col">
-                                <button className="btn btn-primary">Edit Profile</button>
+                                <button onClick={handleEdit} className="btn btn-primary">Edit Profile</button>
                             </div>
                         </div>
                         <div className="row">

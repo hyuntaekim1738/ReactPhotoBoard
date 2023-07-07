@@ -4,7 +4,7 @@ import './App.css'
 import Navigation from './components/navigation/Navigation';
 
 function App() {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(true);
 
   return (
     <>
