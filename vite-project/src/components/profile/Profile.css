@@ -1,0 +1,15 @@
+.profile-picture{
+    height:150px;
+    width:150px;
+}
+
+.divider{
+    border: none;
+    height: 2px;
+    background-color: black;
+
+}
+
+row{
+    margin: 10px;
+}

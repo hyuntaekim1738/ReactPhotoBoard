@@ -1,10 +1,11 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavigationLink from './NavigationLink';
+import './Navigation.tsx';
 //page components sort alphabetically
-import Login from '../Login';
-import Profile from '../Profile';
-import Register from '../Register';
+import Login from '../authentication/Login';
+import Profile from '../profile/Profile';
+import Register from '../authentication/Register';
 
 interface Props{
     //a boolean that will control which links are displayed

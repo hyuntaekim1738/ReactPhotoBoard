@@ -59,9 +59,10 @@ an onclick function passed through the app.tsx file disables the login page
 rendering so that there aren't 2 forms showing up on the same page.
 
 Profile:
-Display username, email, password, photo.
+Display username, email, password, photo. The photo background will be default with the 
+square div being the same color of the background of the website
 Have form to change password or photo.
 Have a display of posts and followers/following.
 The profile picture will be displayed throughout the site once the
 user is logged in so that will be a separate component. The posts will 
-also be a separate component.
+also be a separate component. Create the page to edit the profile.
