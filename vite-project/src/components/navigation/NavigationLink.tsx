@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 interface Props{
     navBrand?: boolean;
     children?: string; //passes in the link name
-    link?: string
+    link?: string;
+    onClickLink?: () => void;
 }
-const NavigationLink = ({navBrand=false, children, link}: Props) => {
+const NavigationLink = ({navBrand=false, children, link, onClickLink}: Props) => {
     if (navBrand){
         return (
             <Link className="navbar-brand" to="/">PhotoBoard</Link>
@@ -15,7 +16,7 @@ const NavigationLink = ({navBrand=false, children, link}: Props) => {
     else{
         return (
             <li className="nav-item">
-                <Link className="nav-link" to={link}>{children}</Link>
+                <Link className="nav-link" to={link} onClick={onClickLink}>{children}</Link>
             </li>
         );
     }
