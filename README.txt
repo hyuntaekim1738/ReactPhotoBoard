@@ -39,6 +39,11 @@ Add a follower/following system in the database
 Create the backend for the post uploading, editing
 Add backend post interaction with likes and comments
 
+Maintenance:
+Brainstorm additional features
+Clean up the documentation
+UI enhancements
+
 Navigation bar:
 A basic header bar with routing links to render the other components. When designing the UI, I'll 
 try having it receive a login status prop that will make it decide which links to display.

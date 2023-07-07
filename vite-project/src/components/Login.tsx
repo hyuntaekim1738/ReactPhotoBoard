@@ -16,7 +16,7 @@ const Login = () => {
                     <label htmlFor="password" className="form-label">Password</label>
                     <input type="password" className="form-control" id="password"></input>
                 </div>   
-                <button type="submit" className="btn bn-primary">Submit</button>             
+                <button type="submit" className="btn btn-primary">Submit</button>             
             </form>
 
         </div>

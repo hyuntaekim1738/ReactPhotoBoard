@@ -20,7 +20,7 @@ const Register = () => {
                     <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
                     <input type="password" className="form-control" id="confirmPassword"></input>
                 </div>  
-                <button type="submit" className="btn bn-primary">Submit</button>             
+                <button type="submit" className="btn btn-primary">Submit</button>             
             </form>
         </div>
     );

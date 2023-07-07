@@ -11,7 +11,7 @@ function App() {
   const handleClickLink = ()=> {
     setDefaultVisible(false);
   };
-  
+
   return (
     <>
       <Navigation onClickLink={handleClickLink} authenticated={false}></Navigation>
