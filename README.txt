@@ -19,12 +19,14 @@ Posts - Allow user to create posts
 Feed/Interaction - Allow user to like, comment, and view posts in the Feed
 Followers - Allow users to follow and be followed by other users
 Navigation - Display links to the other functions
+Searching - Allow user to search for other profiles
 
 Implementation plan (UI):
 Create the navigation bar without the Authentication, then link the pages as each is created
 Create the login and signup pages 
 Create the profile page
 Create the post component and the comment component, add frontend interaction
+Add searchbar
 
 Implementation plan (Backend):
 Connect to firebase API and set up database
@@ -39,3 +41,5 @@ Navigation bar:
 A basic header bar with routing links to render the other components. When designing the UI, I'll 
 try having it receive a login status prop that will make it decide which links to display.
 Add bootstrap styling
+
+Login and signup pages:
