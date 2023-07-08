@@ -1,12 +1,15 @@
 import defaultProfilePicture from '../../assets/defaultProfilePicture.png';
 import reactLogo from '../../assets/react.svg';
 import './Post.css';
+import CommentForm from './CommentForm';
+import Comments from './Comments';
 //tracks active image in carousel
 import { useState } from "react";
 //have it take props of a list of image sources
 const Post = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [liked, setLiked] = useState(false);
+    const [viewComments, setViewComments] = useState(false);
     const handlePrevClick = () => {
         const newIndex = (activeIndex - 1 + 3) % 3; // Assumes 3 images in the carousel
         setActiveIndex(newIndex);
@@ -19,6 +22,15 @@ const Post = () => {
     const handleLike = () => {
         setLiked(!liked);
     }
+
+    const handleComments = () => {
+        setViewComments(true);
+    }
+
+    const handleX = () => {
+        setViewComments(false);
+    }
+    //showing comments
     //the individual carousel images will change to one with the map function when the prop is passed through
     return (
         <>
@@ -59,11 +71,16 @@ const Post = () => {
                 <div className="card-body card-text">
                     <i onClick={handleLike} className={`bi bi-heart ${liked ? 'liked' : 'not-liked'}`}></i>
                     <span>Number of likes</span>
-                    <i className="bi bi-chat"></i>
-                    <span>Comment</span>
+                    <i className="bi bi-chat" data-bs-toggle="dropdown"><span>Comment</span></i>
+                    <ul className="dropdown-menu dropdown-menu-right">
+                        <CommentForm></CommentForm>
+                    </ul>
+                    
                     <h5 className="card-title">Card title</h5>
                     <p className="card-text">Some quick example text to build on the card title and make up the card's content.</p>
                 </div>
+                <a onClick={handleComments}>View comments</a>
+                {viewComments && <Comments handleX={handleX}></Comments>}
             </div>
         </>
     );

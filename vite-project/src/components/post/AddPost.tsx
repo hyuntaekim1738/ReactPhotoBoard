@@ -6,7 +6,6 @@ const AddPost = () => {
         <>
             <div className="container-fluid">
                 <h1>Add Post</h1>
-                <Post></Post>
                 <form>
                     <div className="mb-3">
                         <label htmlFor="photoUpload">Upload Photos:</label>
