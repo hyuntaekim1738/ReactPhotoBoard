@@ -11,7 +11,7 @@ Development environment requires node 16 or higher.
 Run "npm create vite@latest" and select React and then TypeScript. Follow the given instructions.
 Run "npm install react-router-dom" to get React Routing.
 Run using "npm run dev" command to run the program.
-Uses bootstrap using the command npm install bootstrap@latest. 
+Uses bootstrap using the command "npm install bootstrap@latest". 
 
 Functions to implement:
 Authentication - Login and Signup pages
@@ -27,6 +27,7 @@ Create the navigation bar without the Authentication, then link the pages as eac
 Create the login and signup pages 
 Create the profile page
 Create the post component and the comment component, add frontend interaction
+Add the post form and comment form
 Add searchbar
 
 Implementation plan (Backend):
@@ -66,3 +67,13 @@ Have a display of posts and followers/following.
 The profile picture will be displayed throughout the site once the
 user is logged in so that will be a separate component. The posts will 
 also be a separate component. Create the page to edit the profile.
+
+Post:
+Make the page to add the comment which should allow the user to upload multiple photos
+and a single caption. Make the component with a post which should have a 
+carousel that can be navigated and a caption maybe contained in a bootstrap card.
+Test by hardcoding in the images from the folder. Then you need to add like and 
+comment buttons on the card. The like button should turn red/white depending on the 
+click and the comment button should make a text box and submit button appear, maybe 
+in another component. There should also be a separate page to view every comment which
+should be displayed underneath the caption. 

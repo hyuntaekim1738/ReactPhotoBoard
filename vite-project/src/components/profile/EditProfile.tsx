@@ -8,6 +8,10 @@ const EditProfile = ({onCancel}: Props) => {
             <h1>Edit Profile</h1>
             <form>
                 <div className="mb-3">
+                    <label htmlFor="fileInput">Change Profile Picture: </label>
+                    <input type="file" id="fileInput" accept=".jpg,.png,.pdf"/>
+                </div>
+                <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email Address</label>
                     <input type="email" className="form-control" id="email"></input>
                 </div>
