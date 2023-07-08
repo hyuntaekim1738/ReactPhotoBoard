@@ -2,6 +2,7 @@ import ProfilePicture from './ProfilePicture';
 import {useState} from "react";
 import './Profile.css';
 import EditProfile from './EditProfile';
+import Post from '../post/Post';
 const Profile = () => {
     const [edit, setEdit] = useState(false);
     const handleEdit = () => {
@@ -45,8 +46,15 @@ const Profile = () => {
                         </div>
                     </div>
                     <hr className="divider"></hr>
-                    <div className="row text-center">
+                    <div className="row">
                         <h3>Posts</h3>
+                        <Post></Post>
+                        <Post></Post>
+                        <Post></Post>
+                        <Post></Post>
+                        <Post></Post>
+                        <Post></Post>
+                        <Post></Post>
                     </div>
                 </div>
             </div>

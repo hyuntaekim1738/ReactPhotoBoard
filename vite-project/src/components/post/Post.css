@@ -1,4 +1,35 @@
-.post{
-    border-color: black;
-    border-radius:3px;
+.dropdown{
+    float: left;
 }
+
+.card.post{
+    height: 30rem;
+    width: 18rem;
+    margin: 5px;
+}
+
+.card-carousel{
+    height: 60%;
+    width: 100%;
+}
+
+.card-img-top{
+    max-height: 18rem;
+    max-width: 18rem;
+}
+
+.card-body.card-text{
+    height: 40%;
+    width: 100%;
+    padding: 0;
+    overflow-y: scroll;
+}
+
+.liked{
+    background-color: red;
+}
+
+.not-liked{
+    background-color: white;
+}
+

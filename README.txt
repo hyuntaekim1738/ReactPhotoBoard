@@ -12,6 +12,7 @@ Run "npm create vite@latest" and select React and then TypeScript. Follow the gi
 Run "npm install react-router-dom" to get React Routing.
 Run using "npm run dev" command to run the program.
 Uses bootstrap using the command "npm install bootstrap@latest". 
+Run "npm install bootstrap-icons" to get the icons.
 
 Functions to implement:
 Authentication - Login and Signup pages
@@ -28,7 +29,9 @@ Create the login and signup pages
 Create the profile page
 Create the post component and the comment component, add frontend interaction
 Add the post form and comment form
+Arrange post display on profile page.
 Add searchbar
+Create home page and feed
 
 Implementation plan (Backend):
 Connect to firebase API and set up database
@@ -39,6 +42,10 @@ Create the searching system
 Add a follower/following system in the database
 Create the backend for the post uploading, editing
 Add backend post interaction with likes and comments
+
+Future enhancements:
+Find a way to display the photos uploaded in AddPost component.
+Find a better like icon.
 
 Maintenance:
 Brainstorm additional features
@@ -69,8 +76,8 @@ user is logged in so that will be a separate component. The posts will
 also be a separate component. Create the page to edit the profile.
 
 Post:
-Make the page to add the comment which should allow the user to upload multiple photos
-and a single caption. Make the component with a post which should have a 
+Make the page to add the post which should allow the user to upload multiple photos
+and a single caption. Add the styling Make the component with a post which should have a 
 carousel that can be navigated and a caption maybe contained in a bootstrap card.
 Test by hardcoding in the images from the folder. Then you need to add like and 
 comment buttons on the card. The like button should turn red/white depending on the 
