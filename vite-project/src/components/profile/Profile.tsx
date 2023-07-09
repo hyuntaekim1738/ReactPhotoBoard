@@ -35,8 +35,8 @@ const Profile = () => {
                         </div>
                         <div className="row">
                             <div className="col">0 posts</div>
-                            <div className="col">0 followers</div>
-                            <div className="col">0 following</div>
+                            <a href="/viewFollowers" className="col">0 followers</a>
+                            <a href="/viewFollowing" className="col">0 following</a>
                         </div>
                         <div className="row">
                             <div className="col">Name</div>

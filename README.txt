@@ -30,7 +30,7 @@ Create the profile page
 Create the post component and the comment component, add frontend interaction
 Add the post form and comment form
 Arrange post display on profile page.
-Add searchbar
+Add searchbar and follow requests page
 Create home page and feed
 
 Implementation plan (Backend):
@@ -84,3 +84,15 @@ comment buttons on the card. The like button should turn red/white depending on 
 click and the comment button should make a text box and submit button appear, maybe 
 in another component. There should also be a separate page to view every comment which
 should be displayed underneath the caption. 
+
+Searchbar:
+A simple navbar search that will direct you to a page of search results of accounts
+Create a component to display a list of accounts, then link this to the profile where 
+you can view your follower/following count and then link to the search results. The idea
+is to have 3 separate pages that will populate the component according to the page. The profile
+will link to a view followers and view following page which will eventually query the database 
+for the accounts related to the user. The search result will link to the search result page which will
+populate the data based on the search term that has been passed in. Do the same for follow requests
+
+HomePage:
+A centered list of posts that dynamically generates as you scroll down until there is no more content.
