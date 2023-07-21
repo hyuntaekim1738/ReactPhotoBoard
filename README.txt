@@ -4,7 +4,7 @@ interact with other user's posts, similar to Instagram. The app will use a React
 The overall development plan is to develop the UI first and then create the backend. The app uses React Routing and 
 stores its pages in different components, with each page containing sub components based on its functions. The App.jsx 
 file will then render the specific component based on which route is being accessed. This file documents the planning 
-behind the application as I develop each page and functionality.
+behind the application as I develop each page and functionality, and serves as notes for personal future reference.
 
 Set up and dependencies:
 Development environment requires node 16 or higher.
@@ -52,6 +52,7 @@ Brainstorm additional features
 Clean up the documentation
 UI enhancements
 
+FRONTEND
 Navigation bar:
 A basic header bar with routing links to render the other components. When designing the UI, I'll 
 try having it receive a login status prop that will make it decide which links to display.
@@ -96,3 +97,18 @@ populate the data based on the search term that has been passed in. Do the same 
 
 HomePage:
 A centered list of posts that dynamically generates as you scroll down until there is no more content.
+
+BACKEND
+Firebase setup:
+Create firebase project, run "npm install firebase", add the configuration keys to a new object in the config file,
+and add the app initialization in the App file
+
+Authentication:
+Add sign in/up by email functions in firebase for both register and login,
+add the logout function, use this to update the state, migrate the navigation component
+to the home page because navigation is always present.
+
+Profile editing/display:
+First brainstorm how to store user data in the NoSQL 
+firebase, then figure out how to display user data, and
+then add the functionality to edit and save the profile 
