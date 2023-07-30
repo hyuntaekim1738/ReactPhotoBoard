@@ -4,12 +4,8 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-//props
-interface Props {
-    setAuthenticated: (registered: boolean) => void;
-}
 
-const Login = ({setAuthenticated}: Props) => {
+const Login = () => {
     const navigate = useNavigate(); //hook for redirect after login
     //authorization auths
     const auth = getAuth();
@@ -24,7 +20,6 @@ const Login = ({setAuthenticated}: Props) => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log('User signed in successfully:', userCredential.user);
-            setAuthenticated(true);
             navigate("/");
         } 
         catch (error) {

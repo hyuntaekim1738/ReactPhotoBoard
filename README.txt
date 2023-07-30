@@ -112,3 +112,19 @@ Profile editing/display:
 First brainstorm how to store user data in the NoSQL 
 firebase, then figure out how to display user data, and
 then add the functionality to edit and save the profile 
+Use the user id to retrieve the info.
+Profile layout {
+    uid: userid
+    username: useremail
+    followers: []
+    following: []
+    posts: []
+    description: string
+    name: string
+}
+
+add profiles to database upon user creation, add profile information
+display to the page excluding profile picture, add a way to 
+save and edit the profile information, check that it is displayed,
+and add a way to display the profile picture
+

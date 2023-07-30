@@ -1,49 +1,106 @@
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, collection, doc, getDoc } from 'firebase/firestore';
+import { FirebaseApp } from 'firebase/app';
+
 import ProfilePicture from './ProfilePicture';
-import {useState} from "react";
+import { useState, useEffect } from "react";
 import './Profile.css';
 import EditProfile from './EditProfile';
 import Post from '../post/Post';
-const Profile = () => {
-    const [edit, setEdit] = useState(false);
-    const handleEdit = () => {
-        //displays the edit profile page
-        setEdit(true); 
+
+interface Props {
+    firebase: FirebaseApp;
+}
+
+interface ProfileData {
+    username: string;
+    description: string;
+    followers: string[];
+    following: string[];
+    posts: string[];
+    profilePhotoUrl: string;
+}
+
+const Profile = ({ firebase }: Props) => {
+    const [profile, setProfile] = useState<ProfileData | null>(null);
+    const [loading, setLoading] = useState(true);
+    //fetches profile data once auth data is confirmed
+    useEffect(() => {
+        const auth = getAuth(firebase);
+        
+        const fetchProfileData = onAuthStateChanged(auth, async (user) => {
+            
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    const db = getFirestore(firebase);
+                    const profilesCollection = collection(db, "profiles");
+                    const profileDoc = doc(profilesCollection, user.uid);
+                    const profileSnapshot = await getDoc(profileDoc);
+                    if (profileSnapshot.exists()) {
+                        setProfile(profileSnapshot.data() as ProfileData);
+                    } else {
+                        console.log("Profile not found.");
+                    }
+                } else {
+                    console.log("User not logged in.");
+                }
+            } catch (error) {
+                console.error("Error fetching profile data: ", error);
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        fetchProfileData();
+    }, [firebase]);
+
+    
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
-    const handleCancel = () => {
-        setEdit(false);
-    }
-    if (edit){
-        return <EditProfile onCancel={handleCancel}></EditProfile>
+    if (!profile) {
+        return <div>Profile not found.</div>;
     }
 
+    const { username, description, followers, following, posts, profilePhotoUrl } = profile;
     return (
         <>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-3">
-                        <ProfilePicture></ProfilePicture>
+                        <ProfilePicture imgLink={profilePhotoUrl}></ProfilePicture>
                     </div>
                     <div className="col">
                         <div className="row">
-                            <div className="col-4">
-                                <h3>Username</h3>
-                            </div>
+                            {username ? (
+                                <div className="col-4">
+                                    <h3>{username}</h3>
+                                </div>
+                            ) : (
+                                <div className="col-4">
+                                    <h3>Enter username</h3>
+                                </div>
+                            )}
                             <div className="col">
-                                <button onClick={handleEdit} className="btn btn-primary">Edit Profile</button>
+                                <a href="/EditProfile" className="btn btn-primary">Edit Profile</a>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col">0 posts</div>
-                            <a href="/viewFollowers" className="col">0 followers</a>
-                            <a href="/viewFollowing" className="col">0 following</a>
+                            <div className="col">{posts.length} posts</div>
+                            <a href="/viewFollowers" className="col">{followers.length} followers</a>
+                            <a href="/viewFollowing" className="col">{following.length} following</a>
                         </div>
-                        <div className="row">
-                            <div className="col">Name</div>
-                        </div>
-                        <div className="row">
-                            <div className="col">Description/bio</div>
-                        </div>
+                        {description ? (
+                            <div className="row">
+                                <div className="col">Description/bio: {description}</div>
+                            </div>
+                        ) : (
+                            <div className="row">
+                                <div className="col">Enter description/bio</div>
+                            </div>
+                        )}
                     </div>
                     <hr className="divider"></hr>
                     <div className="row">

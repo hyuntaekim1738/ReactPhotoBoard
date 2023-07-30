@@ -1,15 +1,17 @@
 //firebase auth import
+import { FirebaseApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, collection, doc, setDoc} from 'firebase/firestore';
 //react imports
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 //props
 interface Props {
-    setAuthenticated: (registered: boolean) => void;
+    firebase: FirebaseApp;
 }
 
-const Register = ({ setAuthenticated }: Props) => {
+const Register = ({ firebase}: Props) => {
     const navigate = useNavigate(); //hook for redirect after registration
     //authorization auths
     const auth = getAuth();
@@ -20,6 +22,7 @@ const Register = ({ setAuthenticated }: Props) => {
 
     //registers user in firebase
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+
         e.preventDefault();
         console.log("handling register");
         if (password !== confirmPassword) {
@@ -29,9 +32,26 @@ const Register = ({ setAuthenticated }: Props) => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User signed up successfully:', userCredential.user);
-            setAuthenticated(true);
+            //adds user profile to profile colelction
+            try {
+                const db = getFirestore(firebase);
+                const profilesCollection = collection(db, "profiles");
+                const newProfile = {
+                    id: userCredential.user.uid, // Access 'uid' from 'userCredential.user'
+                    username: email.substring(0, email.indexOf('@')), // You need to define 'username', 'name', 'description' in your component state
+                    description: '',
+                    followers: [],
+                    following: [],
+                    posts: [],
+                    profileUrl: ''
+                };
+                await setDoc(doc(profilesCollection, userCredential.user.uid), newProfile);
+                console.log("Profile created successfully!");
+            } catch (error) {
+                console.error("Error creating profile: ", error);
+            }
             navigate("/");
-        } 
+        }
         catch (error) {
             console.error('Error signing up:', error); // Log the entire error object
             // Perform a type assertion to access the error message
