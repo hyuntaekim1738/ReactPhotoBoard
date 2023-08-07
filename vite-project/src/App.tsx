@@ -3,6 +3,7 @@ import './App.css'
 //firebase imports
 import { initializeApp } from 'firebase/app';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, collection, doc, getDoc, getDocs } from 'firebase/firestore';
 //react imports
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -17,7 +18,16 @@ import Register from './components/authentication/Register';
 import SearchResults from './components/accountsList/SearchResults';
 import ViewFollowers from './components/accountsList/ViewFollowers';
 import ViewFollowing from './components/accountsList/ViewFollowing';
-import ViewRequests from './components/accountsList/ViewRequests';
+
+interface Profile {
+  id: string;
+  username: string;
+  description: string;
+  followers: string[];
+  following: string[];
+  posts: string[];
+  profilePhotoUrl: string;
+}
 
 function App() {
   //firebase configuration and set up
@@ -31,12 +41,11 @@ function App() {
     measurementId: "G-V6D9JM11EG"
   }
   const app = initializeApp(config);
-
   //authentication state
   const [authenticated, setAuthenticated] = useState(false);
   useEffect(() => {
     const auth = getAuth(app);
-    
+
     // Set up the listener for authentication state changes
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -50,59 +59,85 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-    //logout function passed to logout link
-    const handleLogout = async () => {
-      const auth = getAuth();
-      try {
-        await signOut(auth);
-        console.log('User logged out successfully.');
-        setAuthenticated(false); // Update the authenticated state to indicate the user is logged out
-      }
-      catch (error) {
-        console.error('Error logging out:', error);
-      }
+  //logout function passed to logout link
+  const handleLogout = async () => {
+    const auth = getAuth();
+    try {
+      await signOut(auth);
+      console.log('User logged out successfully.');
+      setAuthenticated(false); // Update the authenticated state to indicate the user is logged out
     }
-
-    return (
-      <>
-        <Router>
-          <nav className="navbar navbar-expand-lg bg-body-tertiary">
-            <div className="container-fluid">
-              {<NavigationLink navBrand={true}></NavigationLink>}
-              <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                  {authenticated && <NavigationLink link="/">Home</NavigationLink>}
-                  {authenticated && <NavigationLink link="/addPost">Add Post</NavigationLink>}
-                  {authenticated && <NavigationLink link="/profile">Profile</NavigationLink>}
-                  {authenticated && <NavigationLink link="/viewRequests">Follow Requests</NavigationLink>}
-                  {authenticated && <NavigationLink link="/" logOut={handleLogout}>Log out</NavigationLink>}
-                  {!authenticated && <NavigationLink link="/login">Login</NavigationLink>}
-                  {!authenticated && <NavigationLink link="/register">Register</NavigationLink>}
-                </ul>
-                {authenticated && <form className="d-flex" role="search" action="/searchResults">
-                  <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"></input>
-                  <button className="btn btn-outline-success" type="submit">Search</button>
-                </form>}
-              </div>
-            </div>
-          </nav>
-          <Routes>
-            {!authenticated && <Route path="/" element={<Login />} />}
-            {authenticated && <Route path="/" Component={Home} />}
-            <Route path="/addPost" Component={AddPost} />
-            <Route path="/login" element={<Login/>} />
-            <Route path="/profile" element={<Profile firebase={app} />} />
-            <Route path="/editProfile" element={<EditProfile firebase={app}/>} />
-            <Route path="/register" element={<Register firebase={app} />} />
-            <Route path="/viewRequests" Component={ViewRequests} />
-            <Route path="/searchResults" Component={SearchResults} />
-            <Route path="/viewFollowers" element={<ViewFollowers />} />
-            <Route path="/viewFollowing" element={<ViewFollowing />} />
-          </Routes>
-        </Router>
-
-      </>
-    )
+    catch (error) {
+      console.error('Error logging out:', error);
+    }
   }
+
+  //search querying
+  const [searchQuery, setSearchQuery] = useState('');
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const db = getFirestore(app); // Use your firebase app configuration
+        const profilesCollection = collection(db, 'profiles');
+        const profileSnapshots = await getDocs(profilesCollection);
+        const profilesData = profileSnapshots.docs.map((doc) => doc.data() as Profile);
+        setProfiles(profilesData);
+      } catch (error) {
+        console.error('Error fetching profile data: ', error);
+      }
+    };
+    fetchProfiles();
+  }, []);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearch = () => {
+    console.log(searchQuery);
+    setSearchQuery(searchQuery);
+    window.location.href = `/searchResults?query=${encodeURIComponent(searchQuery)}`;
+  };
+
+  return (
+    <>
+      <Router>
+        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+          <div className="container-fluid">
+            {<NavigationLink navBrand={true}></NavigationLink>}
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                {authenticated && <NavigationLink link="/">Home</NavigationLink>}
+                {authenticated && <NavigationLink link="/addPost">Add Post</NavigationLink>}
+                {authenticated && <NavigationLink link="/profile">Profile</NavigationLink>}
+                {authenticated && <NavigationLink link="/" logOut={handleLogout}>Log out</NavigationLink>}
+                {!authenticated && <NavigationLink link="/login">Login</NavigationLink>}
+                {!authenticated && <NavigationLink link="/register">Register</NavigationLink>}
+              </ul>
+              {authenticated && <div className="d-flex" >
+                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={handleSearchChange}></input>
+                <button className="btn btn-outline-success" onClick={handleSearch}>Search</button>
+              </div>}
+            </div>
+          </div>
+        </nav>
+        <Routes>
+          {!authenticated && <Route path="/" element={<Login />} />}
+          {authenticated && <Route path="/" Component={Home} />}
+          <Route path="/addPost" Component={AddPost} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile firebase={app} />} />
+          <Route path="/editProfile" element={<EditProfile firebase={app} />} />
+          <Route path="/register" element={<Register firebase={app} />} />
+          <Route path="/searchResults" element={<SearchResults firebase={app} list={profiles} />} />
+          <Route path="/viewFollowers" element={<ViewFollowers firebase={app}/>} />
+          <Route path="/viewFollowing" element={<ViewFollowing firebase={app}/>} />
+        </Routes>
+      </Router>
+
+    </>
+  )
+}
 
 export default App

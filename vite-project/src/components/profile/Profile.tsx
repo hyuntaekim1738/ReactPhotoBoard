@@ -5,7 +5,6 @@ import { FirebaseApp } from 'firebase/app';
 import ProfilePicture from './ProfilePicture';
 import { useState, useEffect } from "react";
 import './Profile.css';
-import EditProfile from './EditProfile';
 import Post from '../post/Post';
 
 interface Props {
@@ -13,6 +12,7 @@ interface Props {
 }
 
 interface ProfileData {
+    id: string;
     username: string;
     description: string;
     followers: string[];
@@ -56,6 +56,7 @@ const Profile = ({ firebase }: Props) => {
     }, [firebase]);
 
     
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -84,7 +85,7 @@ const Profile = ({ firebase }: Props) => {
                                 </div>
                             )}
                             <div className="col">
-                                <a href="/EditProfile" className="btn btn-primary">Edit Profile</a>
+                                <a href="/editProfile" className="btn btn-primary">Edit Profile</a>
                             </div>
                         </div>
                         <div className="row">

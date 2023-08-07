@@ -40,14 +40,16 @@ Modify the navigation bar to display different links based on whether the user i
 Create the backend for the profile editing/creation
 Create the searching system
 Add a follower/following system in the database
-Create the backend for the post uploading, editing
+Create the backend for the post uploading
 Add backend post interaction with likes and comments
 
 Future enhancements:
 Find a way to display the photos uploaded in AddPost component.
 Find a better like icon.
+Post editing
 
 Maintenance:
+Move typescript interfaces to a centralized location for better reusability
 Brainstorm additional features
 Clean up the documentation
 UI enhancements
@@ -127,4 +129,15 @@ add profiles to database upon user creation, add profile information
 display to the page excluding profile picture, add a way to 
 save and edit the profile information, check that it is displayed,
 and add a way to display the profile picture
+
+Searching system:
+Have it query the database for the usernames and have it fetch the corresponding
+profile picture and username alongside with a follow/unfollow button. Implement it in the home page but have it
+redirect to the results page by passing in the results as a prop and the results page will format the data accordingly
+
+Followers/Following:
+On accounts list, make the buttons display differently based on whether or not the 
+user has followed them or not. Then add the action where the button click
+will add or remove the uid of that person to their list. Then in the display of the
+followers/following, fetch the profiles where the user id is in the followers array.
 
