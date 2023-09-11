@@ -140,4 +140,6 @@ On accounts list, make the buttons display differently based on whether or not t
 user has followed them or not. Then add the action where the button click
 will add or remove the uid of that person to their list. Then in the display of the
 followers/following, fetch the profiles where the user id is in the followers array.
-
+Add the ability to click on the different profile and display their profile page, maybe with
+a username url? For now, try to figure out how to make it so that when you click
+on the username, it renders a profile component with a id prop passed in.

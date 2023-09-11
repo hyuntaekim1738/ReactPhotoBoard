@@ -1,4 +1,9 @@
 const AddPost = () => {
+    interface Posts{
+        id: string;
+        caption: string;
+        photos: string[];
+    }
     return (
         <>
             <div className="container-fluid">

@@ -9,6 +9,7 @@ import Post from '../post/Post';
 
 interface Props {
     firebase: FirebaseApp;
+    user?: string;
 }
 
 interface ProfileData {
@@ -21,41 +22,47 @@ interface ProfileData {
     profilePhotoUrl: string;
 }
 
-const Profile = ({ firebase }: Props) => {
+const Profile = ({ firebase, user }: Props) => {
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(true);
     //fetches profile data once auth data is confirmed
     useEffect(() => {
-        const auth = getAuth(firebase);
-        
-        const fetchProfileData = onAuthStateChanged(auth, async (user) => {
-            
-            try {
-                const user = auth.currentUser;
-                if (user) {
-                    const db = getFirestore(firebase);
-                    const profilesCollection = collection(db, "profiles");
-                    const profileDoc = doc(profilesCollection, user.uid);
-                    const profileSnapshot = await getDoc(profileDoc);
-                    if (profileSnapshot.exists()) {
-                        setProfile(profileSnapshot.data() as ProfileData);
-                    } else {
-                        console.log("Profile not found.");
-                    }
-                } else {
-                    console.log("User not logged in.");
-                }
-            } catch (error) {
-                console.error("Error fetching profile data: ", error);
-            } finally {
-                setLoading(false);
-            }
-        });
+        //for when we are viewing another person's profile
+        if (user != null) {
 
-        fetchProfileData();
+        }
+        //for when we are viewing the main user's profile
+        else {
+            const auth = getAuth(firebase);
+
+            const fetchProfileData = onAuthStateChanged(auth, async (user) => {
+
+                try {
+                    const user = auth.currentUser;
+                    if (user) {
+                        const db = getFirestore(firebase);
+                        const profilesCollection = collection(db, "profiles");
+                        const profileDoc = doc(profilesCollection, user.uid);
+                        const profileSnapshot = await getDoc(profileDoc);
+                        if (profileSnapshot.exists()) {
+                            setProfile(profileSnapshot.data() as ProfileData);
+                        } else {
+                            console.log("Profile not found.");
+                        }
+                    } else {
+                        console.log("User not logged in.");
+                    }
+                } catch (error) {
+                    console.error("Error fetching profile data: ", error);
+                } finally {
+                    setLoading(false);
+                }
+            });
+            fetchProfileData();
+        }
     }, [firebase]);
 
-    
+
 
     if (loading) {
         return <div>Loading...</div>;

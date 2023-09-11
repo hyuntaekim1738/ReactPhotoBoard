@@ -171,7 +171,7 @@ const AccountsList = ({ firebase, list }: Props) => {
                             <td>
                                 <ProfilePicture imgLink={profile.profilePhotoUrl} />
                             </td>
-                            <td>{profile.username}</td>
+                            <td><a>{profile.username}</a></td>
                             <td>
                                 {isFollowing(profile.id) ? (
                                     <button className="btn btn-secondary" onClick={() => handleUnfollow(profile.id)}>Unfollow</button>
