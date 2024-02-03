@@ -1,5 +1,5 @@
 const AddPost = () => {
-    interface Posts{
+    interface Post{
         id: string;
         caption: string;
         photos: string[];

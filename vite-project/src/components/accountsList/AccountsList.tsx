@@ -67,6 +67,11 @@ const AccountsList = ({ firebase, list }: Props) => {
         return following.includes(profileId);
     };
 
+    //link to clicking on other's profile
+    const clickProfile = (profileId: string) => {
+    window.location.href = `/profile?id=${encodeURIComponent(profileId)}`;
+    };
+
     // Function to handle following a profile
     const handleFollow = async (profileId: string) => {
         const firestore = getFirestore(firebase);
@@ -171,7 +176,7 @@ const AccountsList = ({ firebase, list }: Props) => {
                             <td>
                                 <ProfilePicture imgLink={profile.profilePhotoUrl} />
                             </td>
-                            <td><a>{profile.username}</a></td>
+                            <td><a onClick={() => clickProfile(profile.id)}>{profile.username}</a></td>
                             <td>
                                 {isFollowing(profile.id) ? (
                                     <button className="btn btn-secondary" onClick={() => handleUnfollow(profile.id)}>Unfollow</button>

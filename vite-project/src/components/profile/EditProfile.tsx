@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FirebaseApp } from "firebase/app";
-import { getFirestore, doc, updateDoc, getDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { getAuth, User, updateEmail, updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -117,7 +117,6 @@ const EditProfile = ({ firebase }: Props) => {
                     username: formData.username || existingData.username,
                     description: formData.description || existingData.description,
                 };
-                // Update the document with the new merged data
                 await updateDoc(profileDoc, updatedData);
                 console.log("Profile updated successfully!");
                 setError("");
