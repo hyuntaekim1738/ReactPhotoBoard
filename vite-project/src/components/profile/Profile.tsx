@@ -152,8 +152,8 @@ const clickFollowers = (profileId: string) => {
                 <hr className="divider"></hr>
                 <div className="row">
                     <h3>Posts</h3>
-                    {posts.map((post) => (
-                        <Post firebase={firebase} post={post}></Post>
+                    {posts.map((post, index) => (
+                        <Post firebase={firebase} post={post} key={index}></Post>
                     ))}
                 </div>
             </div>

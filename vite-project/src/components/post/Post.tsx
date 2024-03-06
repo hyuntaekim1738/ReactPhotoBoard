@@ -7,10 +7,13 @@ import Comments from './Comments';
 import { useState, useEffect } from "react";
 import PostInterface from "../../shared/PostInterface.tsx";
 import { FirebaseApp } from "firebase/app";
-import { getFirestore, doc, updateDoc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
+
+import { getFirestore, doc, updateDoc, deleteDoc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { getAuth, User, updateEmail, updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+
+
 interface Props {
     firebase: FirebaseApp;
     post: PostInterface;
@@ -20,7 +23,25 @@ const Post = ({ firebase, post }: Props) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [liked, setLiked] = useState(false);
     const [viewComments, setViewComments] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
+    const navigate = useNavigate();
     const numPhotos = post.photoUrls.length;
+
+    const db = getFirestore(firebase);
+
+    useEffect(() => {
+        const auth = getAuth(firebase);
+        const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+            if (currentUser) {
+                setUser(currentUser);
+            } else {
+                setUser(null);
+            }
+        });
+        return () => unsubscribe();
+    }, [firebase]); 
+
+
     const handlePrevClick = () => {
         const newIndex = (activeIndex - 1 + numPhotos) % numPhotos;
         setActiveIndex(newIndex);
@@ -32,16 +53,37 @@ const Post = ({ firebase, post }: Props) => {
 
     const handleLike = () => {
         setLiked(!liked);
-    }
+    };
 
     const handleComments = () => {
         setViewComments(true);
-    }
+    };
 
     const handleX = () => {
         setViewComments(false);
-    }
+    };
 
+    const handleDelete = async () => {
+        if (!user) {
+            console.log("User is null right now so you cannot delete the post");
+            return;
+        }
+        const storage = getStorage(firebase);
+        for (let i = 0; i < post.photoUrls.length; i++) {
+            // Create a reference to the file to delete
+            const picRef = ref(storage, `posts/${user.uid}/${post.postId}/${post.photoNames[i]}`);
+
+            // Delete the file
+            deleteObject(picRef).then(() => {
+                console.log("post " + i + " deleted successfully");
+            }).catch((error) => {
+                // Uh-oh, an error occurred!
+                console.log("An error occured deleting the photos of the post");
+            });
+        }
+        await deleteDoc(doc(db, "posts", post.postId));
+        window.location.reload(); //temporary solution to show deletion, find a way to fix this
+    };
     //showing comments
     //the individual carousel images will change to one with the map function when the prop is passed through
     return (
@@ -52,7 +94,7 @@ const Post = ({ firebase, post }: Props) => {
                         ...
                     </button>
                     <ul className="dropdown-menu dropdown-menu-right">
-                        <li><a className="dropdown-item" href="#">Delete Post</a></li>
+                        {user && post.userId == user.uid && <li><a className="dropdown-item" href="#" onClick={handleDelete}>Delete Post</a></li>}
                         <li><a className="dropdown-item" href="#">Another action</a></li>
                         <li><a className="dropdown-item" href="#">Something else here</a></li>
                     </ul>

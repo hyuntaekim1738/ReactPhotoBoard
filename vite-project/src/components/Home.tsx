@@ -66,8 +66,8 @@ const Home = ({ firebase }: Props) => {
             <div className="container-fluid">
                 <h1>Home Page</h1>
                 <div className="feed">
-                    {posts.map((post) => (
-                        <div className="row d-flex justify-content-center">
+                    {posts.map((post, index) => (
+                        <div key={index} className="row d-flex justify-content-center">
                             <Post firebase={firebase} post={post}></Post>
                         </div>
                     ))}

@@ -21,6 +21,7 @@ const AddPost = ({ firebase }: Props) => {
         caption: "",
         date: new Date(),
         photos: null,
+        photoNames: [],
         photoUrls: []
     });
 
@@ -44,11 +45,14 @@ const AddPost = ({ firebase }: Props) => {
 
     const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files // Get the selected file from the input
+        const names: string[] = [];
         if (files) {
             console.log("Setting the post files");
             setFormData((prevData: PostInterface) => ({ ...prevData, photos: files }));
-            console.log(files);
-            console.log(formData.photos);
+            for (let i = 0; i < files.length; i++) {
+                names.push(files[i].name);
+            }
+            setFormData((prevData: PostInterface) => ({...prevData, photoNames: names}));
         }
     };
 
