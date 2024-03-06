@@ -125,7 +125,7 @@ function App() {
         <Routes>
           {!authenticated && <Route path="/" element={<Login />} />}
           {authenticated && <Route path="/" Component={Home} />}
-          <Route path="/addPost" Component={AddPost} />
+          <Route path="/addPost" element={<AddPost firebase={app}></AddPost>} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile firebase={app} />} />
           <Route path="/editProfile" element={<EditProfile firebase={app} />} />

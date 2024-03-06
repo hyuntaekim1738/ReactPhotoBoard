@@ -60,8 +60,7 @@ const Profile = ({ firebase }: Props) => {
                     const user = auth.currentUser;
                     if (user) {
                         const db = getFirestore(firebase);
-                        const profilesCollection = collection(db, "profiles");
-                        const profileDoc = doc(profilesCollection, user.uid);
+                        const profileDoc = doc(db, "profiles", user.uid);
                         const profileSnapshot = await getDoc(profileDoc);
                         if (profileSnapshot.exists()) {
                             setProfile(profileSnapshot.data() as ProfileData);

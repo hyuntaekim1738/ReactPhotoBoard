@@ -38,7 +38,7 @@ const Register = ({ firebase}: Props) => {
                 const profilesCollection = collection(db, "profiles");
                 const newProfile = {
                     id: userCredential.user.uid, // Access 'uid' from 'userCredential.user'
-                    username: email.substring(0, email.indexOf('@')), // You need to define 'username', 'name', 'description' in your component state
+                    username: email.substring(0, email.indexOf('@')), 
                     description: '',
                     followers: [],
                     following: [],

@@ -28,8 +28,7 @@ const ViewFollowers = ({ firebase }: Props) => {
             const fetchProfileData = async () => {
                 try {
                     const db = getFirestore(firebase);
-                    const profilesCollection = collection(db, "profiles");
-                    const profileDoc = doc(profilesCollection, id);
+                    const profileDoc = doc(db, "profiles", id);
                     const profileSnapshot = await getDoc(profileDoc);
                     if (profileSnapshot.exists()) {
                         const gottenProfile = profileSnapshot.data() as Profile;
@@ -38,7 +37,7 @@ const ViewFollowers = ({ firebase }: Props) => {
                             setFollowers(gottenProfile.followers);
 
                             // Filter profiles where the ID is in the followers array
-                            const profileDocs = await getDocs(profilesCollection);
+                            const profileDocs = await getDocs(collection(db, "profiles"));
                             const profilesData = profileDocs.docs.map((doc) => doc.data() as Profile);
 
                             // Use the updated followers value for filtering

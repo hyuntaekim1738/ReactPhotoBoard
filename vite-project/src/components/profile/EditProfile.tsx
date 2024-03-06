@@ -71,8 +71,7 @@ const EditProfile = ({ firebase }: Props) => {
         const firestore = getFirestore(firebase);
         try {
             // Get the existing user data from Firestore
-            const profilesCollection = collection(firestore, "profiles");
-            const profileDoc = doc(profilesCollection, user.uid);
+            const profileDoc = doc(firestore, "profiles", user.uid);
             let userSnap = await getDoc(profileDoc);
             if (userSnap.exists()) {
                 // Update email and password if they are changed in the form
