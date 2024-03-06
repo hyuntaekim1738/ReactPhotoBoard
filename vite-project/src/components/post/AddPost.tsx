@@ -29,6 +29,7 @@ const AddPost = ({ firebase }: Props) => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
             if (currentUser) {
                 setUser(currentUser);
+                setFormData({...formData, userId: currentUser.uid})
             } else {
                 setUser(null);
             }

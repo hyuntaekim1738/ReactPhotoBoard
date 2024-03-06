@@ -124,7 +124,7 @@ function App() {
         </nav>
         <Routes>
           {!authenticated && <Route path="/" element={<Login />} />}
-          {authenticated && <Route path="/" Component={Home} />}
+          {authenticated && <Route path="/" element={<Home firebase={app} />} />}
           <Route path="/addPost" element={<AddPost firebase={app}></AddPost>} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile firebase={app} />} />

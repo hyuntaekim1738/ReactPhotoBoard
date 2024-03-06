@@ -4,7 +4,7 @@ interface ProfileInterface { //accountsList, SearchResults, ViewFollowers, ViewF
     description: string;
     followers: string[];
     following: string[];
-    posts: string[];
+    //posts: string[];
     profilePhotoUrl: string;
 }
 export default ProfileInterface;

@@ -147,6 +147,8 @@ on the username, it renders a profile component with a id prop passed in.
 Post Upload:
 Add handling for uploading the multiple photos to the cloud and storing the caption. Then add a way to 
 fetch and display the photos. Implement the upload by 3/15 and implement the fetch by 4/1
+For the fetch, first implement passing in the post data to each post component from the profile and homepage
+and once that is implemented, implement translating that data from the postInterface to the actual post display
 
 Post interaction:
 Add comments and likes by 4/15

@@ -6,6 +6,8 @@ import ProfilePicture from './ProfilePicture';
 import { useState, useEffect } from "react";
 import './Profile.css';
 import Post from '../post/Post';
+import PostInterface from "../../shared/PostInterface.tsx";
+import GetPostsById from "../../shared/GetPostsById.tsx";
 
 interface Props {
     firebase: FirebaseApp;
@@ -17,13 +19,13 @@ interface ProfileData {
     description: string;
     followers: string[];
     following: string[];
-    posts: string[];
     profilePhotoUrl: string;
 }
 
 const Profile = ({ firebase }: Props) => {
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(true);
+    const [posts, setPosts] = useState<PostInterface[]>([]);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const id = queryParams.get('id') || null;
@@ -36,6 +38,11 @@ const Profile = ({ firebase }: Props) => {
                     const db = getFirestore(firebase);
                     const profilesCollection = collection(db, "profiles");
                     const profileDoc = doc(profilesCollection, id);
+                    GetPostsById(firebase, id).then((data: PostInterface[]) => {
+                        setPosts(data);
+                    }).catch((error) => {
+                        console.log("Error fetching posts");
+                    });
                     const profileSnapshot = await getDoc(profileDoc);
                     if (profileSnapshot.exists()) {
                         setProfile(profileSnapshot.data() as ProfileData);
@@ -67,6 +74,11 @@ const Profile = ({ firebase }: Props) => {
                         } else {
                             console.log("Profile not found.");
                         }
+                        GetPostsById(firebase, user.uid).then((data: PostInterface[]) => {
+                            setPosts(data);
+                        }).catch((error) => {
+                            console.log("Error fetching posts");
+                        });
                     } else {
                         console.log("User not logged in.");
                     }
@@ -90,7 +102,7 @@ if (!profile) {
     return <div>Profile not found.</div>;
 }
 
-const { username, description, followers, following, posts, profilePhotoUrl } = profile;
+const { username, description, followers, following, profilePhotoUrl } = profile;
 const clickFollowers = (profileId: string) => {
     window.location.href = `/viewFollowers?id=${encodeURIComponent(profileId)}`;
     };
@@ -121,7 +133,7 @@ const clickFollowers = (profileId: string) => {
                         }
                     </div>
                     <div className="row">
-                        <div className="col">{posts.length} posts</div>
+                        <div className="col">{posts ? posts.length : 0} posts</div>
                         {!id && <a href="/viewFollowers" className="col">{followers.length} followers</a> }
                         {id && <a onClick={() => clickFollowers(id)} className="col">{followers.length} followers</a>}
                         {!id && <a href="/viewFollowing" className="col">{following.length} following</a> }
@@ -140,13 +152,9 @@ const clickFollowers = (profileId: string) => {
                 <hr className="divider"></hr>
                 <div className="row">
                     <h3>Posts</h3>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
-                    <Post></Post>
+                    {posts.map((post) => (
+                        <Post firebase={firebase} post={post}></Post>
+                    ))}
                 </div>
             </div>
         </div>
