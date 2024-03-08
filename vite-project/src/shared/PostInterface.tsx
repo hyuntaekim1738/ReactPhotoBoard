@@ -4,8 +4,8 @@ interface PostInterface{ //addPost
     caption: string;
     date: Date;
     photos: FileList | null;
+    likes: string[];
     photoNames: string[];
     photoUrls: string[];
-    //add a list of strings for who liked it
 }
 export default PostInterface;

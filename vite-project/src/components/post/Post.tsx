@@ -1,16 +1,13 @@
-import defaultProfilePicture from '../../assets/defaultProfilePicture.png';
-import reactLogo from '../../assets/react.svg';
 import './Post.css';
 import CommentForm from './CommentForm';
 import Comments from './Comments';
-//tracks active image in carousel
 import { useState, useEffect } from "react";
 import PostInterface from "../../shared/PostInterface.tsx";
 import { FirebaseApp } from "firebase/app";
 
-import { getFirestore, doc, updateDoc, deleteDoc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { getAuth, User, updateEmail, updatePassword } from "firebase/auth";
+import { getFirestore, doc, deleteDoc, collection, updateDoc } from "firebase/firestore";
+import { getStorage, ref, deleteObject } from "firebase/storage";
+import { getAuth, User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 
@@ -34,9 +31,13 @@ const Post = ({ firebase, post }: Props) => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
             if (currentUser) {
                 setUser(currentUser);
+                if (currentUser.uid in post.likes) {
+                    setLiked(true);
+                }
             } else {
                 setUser(null);
             }
+
         });
         return () => unsubscribe();
     }, [firebase]); 
@@ -51,8 +52,23 @@ const Post = ({ firebase, post }: Props) => {
         setActiveIndex(newIndex);
     };
 
-    const handleLike = () => {
+    const handleLike = async () => {
+        if (!user) {
+            console.log("user isn't logged in.");
+            return;
+        }
+        if (liked) {
+            post.likes.splice(post.likes.indexOf(user.uid), 1);
+        }
+        else { //add to the array
+            post.likes.push(user.uid);
+        }
         setLiked(!liked);
+        //update in firebase
+        const {photos, ...postDoc} = post;
+        const db = getFirestore(firebase);
+        const docRef = doc(db, "posts", post.postId);
+        await updateDoc(docRef, postDoc);
     };
 
     const handleComments = () => {
@@ -120,7 +136,7 @@ const Post = ({ firebase, post }: Props) => {
                 </div>
                 <div className="card-body card-text">
                     <i onClick={handleLike} className={`bi bi-heart ${liked ? 'liked' : 'not-liked'}`}></i>
-                    <span>Number of likes</span>
+                    <span>{post.likes.length} likes</span>
                     <i className="bi bi-chat" data-bs-toggle="dropdown"><span>Comment</span></i>
                     <ul className="dropdown-menu dropdown-menu-right">
                         <CommentForm></CommentForm>

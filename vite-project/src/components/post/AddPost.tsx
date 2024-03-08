@@ -21,6 +21,7 @@ const AddPost = ({ firebase }: Props) => {
         caption: "",
         date: new Date(),
         photos: null,
+        likes: [],
         photoNames: [],
         photoUrls: []
     });
