@@ -7,5 +7,7 @@ interface PostInterface{ //addPost
     likes: string[];
     photoNames: string[];
     photoUrls: string[];
+    comments: string[];
+    //comments must be a string and a date, maybe automatically append the date to the string?
 }
 export default PostInterface;

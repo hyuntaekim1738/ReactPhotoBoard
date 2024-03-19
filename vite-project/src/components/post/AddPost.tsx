@@ -23,7 +23,8 @@ const AddPost = ({ firebase }: Props) => {
         photos: null,
         likes: [],
         photoNames: [],
-        photoUrls: []
+        photoUrls: [],
+        comments: []
     });
 
     useEffect(() => {

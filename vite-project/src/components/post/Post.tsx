@@ -139,14 +139,14 @@ const Post = ({ firebase, post }: Props) => {
                     <span>{post.likes.length} likes</span>
                     <i className="bi bi-chat" data-bs-toggle="dropdown"><span>Comment</span></i>
                     <ul className="dropdown-menu dropdown-menu-right">
-                        <CommentForm></CommentForm>
+                        <CommentForm firebase={firebase} postId={post.postId}></CommentForm>
                     </ul>
 
                     <h5 className="card-title">Post</h5>
                     <p className="card-text">{post.caption}</p>
                 </div>
                 <a onClick={handleComments}>View comments</a>
-                {viewComments && <Comments handleX={handleX}></Comments>}
+                {viewComments && <Comments handleX={handleX} firebase={firebase} postId={post.postId}></Comments>}
             </div>
         </>
     );
